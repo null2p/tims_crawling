@@ -31,9 +31,6 @@ window.onload = function() {
 
         // Set the cookie in the browser's cookie storage
         document.cookie = cookie;
-
-        // Redirect the user to the home page
-//        window.location.href = "/tims-crawler/dashboard";
     })
     .catch(function(error) {
         console.error(error);
