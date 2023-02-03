@@ -1,6 +1,7 @@
 package com.example.timsCrawler.service;
 
 import com.example.timsCrawler.domain.Member;
+import com.example.timsCrawler.domain.dto.MilitaryLateTimeResponseDto;
 import com.example.timsCrawler.domain.dto.WorkTimeResponseDto;
 import jakarta.servlet.http.Cookie;
 import org.jsoup.Connection;
@@ -41,7 +42,7 @@ public class TimsCrawlerService {
         System.out.println("cookie = " + loginPageResponse.cookies());
     }
 
-    public void getYearAttendanceList(Cookie[] cookies) throws IOException {
+    public MilitaryLateTimeResponseDto getYearAttendanceList(Cookie[] cookies) throws IOException {
         Map<String, String> loginCookie = new HashMap<>();
         for (Cookie cookie : cookies) {
             loginCookie.put(cookie.getName(), cookie.getValue());
@@ -69,6 +70,8 @@ public class TimsCrawlerService {
 
         Document attendanceYearDocument= attendanceResponse.parse();
         getLateTime(attendanceYearDocument);
+        return MilitaryLateTimeResponseDto.builder()
+                .build();
     }
 
     public WorkTimeResponseDto getWeekAttendanceList(Cookie[] cookies) throws IOException {
