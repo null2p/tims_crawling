@@ -26,20 +26,12 @@ public class TimsCrawlerController {
     public String dashboardPage(Model model, HttpServletRequest httpServletRequest) throws IOException {
         Cookie[] cookies = httpServletRequest.getCookies();
         WorkTimeResponseDto workTimeResponseDto = timsCrawlerService.getWeekAttendanceList(cookies);
+        workTimeResponseDto.setName("아작체");
+        model.addAttribute("workTimeResponse", workTimeResponseDto);
 
         MilitaryLateTimeResponseDto militaryLateTimeResponseDto = timsCrawlerService.getYearAttendanceList(cookies);
-
-        //////// mocking ////////
-        workTimeResponseDto.setName("아작체");
-        militaryLateTimeResponseDto = MilitaryLateTimeResponseDto.builder()
-                .day(1)
-                .hour(17)
-                .min(10)
-                .build();
-        ////////////////////////
-
-        model.addAttribute("workTimeResponse", workTimeResponseDto);
         model.addAttribute("militaryLateTimeResponse", militaryLateTimeResponseDto);
+
         return "crawler_dashboard";
     }
 }

@@ -7,6 +7,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,10 +21,15 @@ public class ApiController {
     private final TimsCrawlerService timsCrawlerService;
 
     @PostMapping(path="/login")
-    public void login(@RequestBody Member member, HttpServletResponse response) throws IOException {
-        timsCrawlerService.tryLogin(member);
-        member.setResponseCookie();
-        response.addCookie(member.getCookie());
+    public ResponseEntity<String> login(@RequestBody Member member, HttpServletResponse response) throws IOException {
+        try {
+            timsCrawlerService.tryLogin(member);
+            response.addCookie(member.getCookie());
+            return new ResponseEntity<>("Login Successful", HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>("Login Failed" + e.getMessage(), HttpStatus.valueOf(400));
+        }
     }
 
     @GetMapping(path = "/late-time")
