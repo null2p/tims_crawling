@@ -1,5 +1,6 @@
 package com.example.timsCrawler.controller;
 
+import com.example.timsCrawler.domain.dto.MilitaryLateTimeResponseDto;
 import com.example.timsCrawler.domain.dto.WorkTimeResponseDto;
 import com.example.timsCrawler.service.TimsCrawlerService;
 import jakarta.servlet.http.Cookie;
@@ -24,9 +25,13 @@ public class TimsCrawlerController {
     @GetMapping("/tims-crawler/dashboard")
     public String dashboardPage(Model model, HttpServletRequest httpServletRequest) throws IOException {
         Cookie[] cookies = httpServletRequest.getCookies();
-        WorkTimeResponseDto response = timsCrawlerService.getWeekAttendanceList(cookies);
-        response.setName("아작체");
-        model.addAttribute("response", response);
+        WorkTimeResponseDto workTimeResponseDto = timsCrawlerService.getWeekAttendanceList(cookies);
+        workTimeResponseDto.setName("아작체");
+        model.addAttribute("workTimeResponse", workTimeResponseDto);
+
+        MilitaryLateTimeResponseDto militaryLateTimeResponseDto = timsCrawlerService.getYearAttendanceList(cookies);
+        model.addAttribute("militaryLateTimeResponse", militaryLateTimeResponseDto);
+
         return "crawler_dashboard";
     }
 }
