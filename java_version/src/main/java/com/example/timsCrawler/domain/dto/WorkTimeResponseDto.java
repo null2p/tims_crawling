@@ -10,6 +10,6 @@ import lombok.*;
 public class WorkTimeResponseDto {
     String name;
     Integer hour;
-    int min;
-    int totalMin;
+    Integer min;
+    Integer totalMin;
 }
