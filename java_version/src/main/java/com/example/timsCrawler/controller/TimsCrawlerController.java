@@ -26,7 +26,7 @@ public class TimsCrawlerController {
     public String dashboardPage(Model model, HttpServletRequest httpServletRequest) throws IOException {
         Cookie[] cookies = httpServletRequest.getCookies();
         WorkTimeResponseDto workTimeResponseDto = timsCrawlerService.getWeekAttendanceList(cookies);
-        workTimeResponseDto.setName("아작체");
+        workTimeResponseDto.setName(timsCrawlerService.getName(cookies));
         model.addAttribute("workTimeResponse", workTimeResponseDto);
 
         MilitaryLateTimeResponseDto militaryLateTimeResponseDto = timsCrawlerService.getYearAttendanceList(cookies);

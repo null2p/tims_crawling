@@ -24,6 +24,7 @@ public class ApiController {
     public ResponseEntity<String> login(@RequestBody Member member, HttpServletResponse response) throws IOException {
         try {
             timsCrawlerService.tryLogin(member);
+            member.setResponseCookie();
             response.addCookie(member.getCookie());
             return new ResponseEntity<>("Login Successful", HttpStatus.OK);
         }
@@ -36,6 +37,12 @@ public class ApiController {
     public void getTotalLateTime(HttpServletRequest request) throws IOException {
         Cookie[] cookies = request.getCookies();
         timsCrawlerService.getYearAttendanceList(cookies);
+    }
+
+    @GetMapping(path="/name")
+    public void getName(HttpServletRequest request) throws IOException {
+        Cookie[] cookies = request.getCookies();
+        timsCrawlerService.getName(cookies);
     }
 
     @GetMapping(path="/work-time")
