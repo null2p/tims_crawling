@@ -107,7 +107,7 @@ public class TimsCrawlerService {
                 .totalMin(workTime)
                 .min(workTime%60)
                 .hour(workTime/60)
-                .percentage((workTime * 100) / (60 * 8 * 5))
+                .percentage(Math.min((workTime*100)/(60*8*5), 100))
                 .build();
     }
 
