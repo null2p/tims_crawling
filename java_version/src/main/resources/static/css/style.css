@@ -163,27 +163,29 @@ body{
 .progress{
     margin:50px 0px 50px 0px;
 	background-color:#fff;
-	height:15px;
+	height:40px;
 	overflow: visible !important;
 	position: relative;
-	border-radius:20px !important;
+	border-radius:40px !important;
 	box-shadow: none;
 }
 .progress .progress-bar{
+	background-color: cornflowerblue;
+	height:40px;
 	animation: animate-positive 2s;
 	position: relative;
 	box-shadow: none;
-    border-radius:20px !important;
+    border-radius:40px !important;
 }
 .progress .progress-bar:before{
-	content:"hi";
-	position: absolute;
-	top: 20px;
-	right: -10px;
-    background-size: 100% 100%;
-    background-color: aqua;
-	height: 20px;
-	width: 20px;
+	/*content:"11%";*/
+	/*position: absolute;*/
+	/*top: 20px;*/
+	/*right: -10px;*/
+    /*background-size: 100% 100%;*/
+    /*background-color: aqua;*/
+	/*height: 20px;*/
+	/*width: 20px;*/
 }
 .progress .progress-bar:after{
 	content:"";

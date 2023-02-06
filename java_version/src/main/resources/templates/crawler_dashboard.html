@@ -32,9 +32,9 @@
                 <td><h1 class= "work-time">분 </h1></td>
             </tr>
         </table>
-        <div class="progress">
-            <div class="progress-bar:before"></div>
-            <div class="progress-bar" style="width: 40%;  background-color:mediumpurple;"></div>
+        <div class="progress" style="height:40px;">
+<!--            <div class="progress-bar" th:utext="${workTimeResponse.percentage} + '%'" th:style="'width: ' + ${workTimeResponse.percentage} + '%'"></div>-->
+            <div class="progress-bar" th:style="'width: 50%'"><div style="font-size: 20px;margin: 10px 0px 10px 0px;" th:utext="${workTimeResponse.percentage} + '%'"> </div></div>
         </div>
         <table style="margin:100px 100px 30px 0px;">
             <tr>
