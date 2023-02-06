@@ -69,9 +69,7 @@ public class TimsCrawlerService {
                 .execute();
 
         Document attendanceYearDocument= attendanceResponse.parse();
-        getLateTime(attendanceYearDocument);
-        return MilitaryLateTimeResponseDto.builder()
-                .build();
+        return getLateTime(attendanceYearDocument);
     }
 
     public WorkTimeResponseDto getWeekAttendanceList(Cookie[] cookies) throws IOException {
@@ -112,7 +110,34 @@ public class TimsCrawlerService {
                 .build();
     }
 
-    public void getLateTime(Document attendanceYearDocument) {
+    public String getName(Cookie[] cookies) throws IOException {
+        Map<String, String> loginCookie = new HashMap<>();
+        for (Cookie cookie : cookies) {
+            loginCookie.put(cookie.getName(), cookie.getValue());
+        }
+        String menuLeftUrl = "https://otims.tmax.co.kr/menuLeft.screen";
+        Connection.Response personalInfoResponse = Jsoup.connect(menuLeftUrl)
+                .method(Connection.Method.GET)
+                .cookies(loginCookie)
+                .userAgent(userAgent)
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .header("Referer", "https://tims.tmax.co.kr/")
+                .header("Origin", "https://tims.tmax.co.kr")
+                .execute();
+
+        Document personalInfoDoc = personalInfoResponse.parse();
+        Elements tdElements = Objects.requireNonNull(personalInfoDoc.select("tr").first()).select("td[onclick^=fn_menuLink]:not(:has(img))");
+
+        StringBuilder nameBuilder = new StringBuilder();
+        for (Element tdElement : tdElements) {
+            nameBuilder.append(" ").append(tdElement.text());
+        }
+
+        return nameBuilder.toString();
+    }
+
+
+    public MilitaryLateTimeResponseDto getLateTime(Document attendanceYearDocument) {
         Elements lateElements = attendanceYearDocument.select("table tr:has(td:contains(지각))");
         int totalLateTime = 0;
         for (Element row : lateElements) {
@@ -129,6 +154,12 @@ public class TimsCrawlerService {
             }
         }
         System.out.println("지각 몇 분 ?: "+ totalLateTime + "분");
+
+        return MilitaryLateTimeResponseDto.builder()
+                .day(totalLateTime/(60*24))
+                .hour(totalLateTime/60)
+                .min(totalLateTime%60)
+                .build();
     }
 
     public int getWorkTimeForWeek(Document attendanceWeekDocument) {
