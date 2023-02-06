@@ -107,6 +107,7 @@ public class TimsCrawlerService {
                 .totalMin(workTime)
                 .min(workTime%60)
                 .hour(workTime/60)
+                .percentage(Math.min((workTime*100)/(60*8*5), 100))
                 .build();
     }
 
@@ -178,13 +179,15 @@ public class TimsCrawlerService {
         workTime += getWorkTimeToday(afterOffElements, 14,18);
         //휴가 근무시간 합
         Elements offElements = attendanceWeekDocument.select("table tr:has(td:contains(휴가))");
-        System.out.println("offElements.size() = " + offElements.size());
+//        System.out.println("offElements = " + offElements);
         for(Element row : offElements){
             if(row == null){
                 System.out.println("offElements is null");
             }
             workTime += 60*8;
         }
+        //목차에 있는 "휴가" element 잡힌 것 제외
+        workTime -= 60*8;
 
         System.out.println("workTime = " + workTime);
         return workTime;

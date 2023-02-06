@@ -24,7 +24,7 @@
                 <td><h2 class= "worker-info">님 이번주 근무시간은?</h2></td>
             </tr>
         </table>
-        <table style="margin:0px 0px 250px 0px; auto;">
+        <table style="margin:0px 0px 250px 0px;">
             <tr>
                 <td><h1 class= "work-time" th:text="${workTimeResponse.hour}"/></td>
                 <td><h1 class= "work-time">시간&nbsp</h1></td>
@@ -32,9 +32,10 @@
                 <td><h1 class= "work-time">분 </h1></td>
             </tr>
         </table>
-        <div class="progress">
-            <div class="progress-bar:before"></div>
-            <div class="progress-bar" style="width: 40%;  background-color:mediumpurple;"></div>
+        <div class="progress" style="height:40px;">
+            <div class="progress-bar" th:style="'width: ' + ${workTimeResponse.percentage} + '%'">
+                <div style="font-size: 20px;margin: 10px 0px 10px 0px;" th:utext="${workTimeResponse.percentage} + '%'"></div>
+            </div>
         </div>
         <table style="margin:100px 100px 30px 0px;">
             <tr>

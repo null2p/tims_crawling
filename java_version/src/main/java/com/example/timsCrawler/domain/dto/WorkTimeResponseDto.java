@@ -12,4 +12,5 @@ public class WorkTimeResponseDto {
     Integer hour;
     Integer min;
     Integer totalMin;
+    Integer percentage;
 }
