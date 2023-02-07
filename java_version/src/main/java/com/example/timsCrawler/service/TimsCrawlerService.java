@@ -17,15 +17,16 @@ import java.util.*;
 
 @Service
 public class TimsCrawlerService {
-    final String timsUrl = "https://tims.tmax.co.kr";
-    final String timsLoginUrl = "https://otims.tmax.co.kr/checkUserInfo.tmv?tmaxsso_nsso=no";
     String userAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36";
+    String tmaxPrefix;
 
     public void tryLogin(Member member) throws IOException {
         Map<String, String> loginData = new HashMap<>();
         loginData.put("userId", member.getUsername());
         loginData.put("passwd", member.getPassword());
         loginData.put("company", member.getCompany());
+
+        String timsLoginUrl = getLoginUrl(member.getCompany());
 
         Connection.Response loginPageResponse = Jsoup.connect(timsLoginUrl)
                 .userAgent(userAgent)
@@ -40,6 +41,25 @@ public class TimsCrawlerService {
         member.nullifyLoginData();
         member.setLoginCookie(loginPageResponse.cookies());
         System.out.println("cookie = " + loginPageResponse.cookies());
+    }
+
+    private String getLoginUrl(String company){
+        switch (company) {
+            case "TS" -> {
+                tmaxPrefix = "https://stims.tmax.co.kr";
+                return "https://stims.tmax.co.kr/checkUserInfo.tmv?tmaxsso_nsso=no";
+            }
+            case "TD" -> {
+                tmaxPrefix = "https://dtims.tmax.co.kr";
+                return "https://dtims.tmax.co.kr/checkUserInfo.tmv?tmaxsso_nsso=no";
+            }
+            case "TO" -> {
+                tmaxPrefix = "https://otims.tmax.co.kr";
+                return "https://otims.tmax.co.kr/checkUserInfo.tmv?tmaxsso_nsso=no";
+            }
+        }
+
+        return "";
     }
 
     public MilitaryLateTimeResponseDto getYearAttendanceList(Cookie[] cookies) throws IOException {
@@ -83,7 +103,7 @@ public class TimsCrawlerService {
         String dateToday = timsDateFormat.format(today);
         String dateMonday = getDateMonday();
 
-        String attendanceUrl = "https://otims.tmax.co.kr/insa/attend/findAttdDailyConfirm.screen";
+        String attendanceUrl = tmaxPrefix + "/insa/attend/findAttdDailyConfirm.screen";
 
         Map<String,String> attendanceForm = new HashMap<>();
         attendanceForm.put("retStDate",dateMonday);
@@ -116,7 +136,7 @@ public class TimsCrawlerService {
         for (Cookie cookie : cookies) {
             loginCookie.put(cookie.getName(), cookie.getValue());
         }
-        String menuLeftUrl = "https://otims.tmax.co.kr/menuLeft.screen";
+        String menuLeftUrl = tmaxPrefix + "/menuLeft.screen";
         Connection.Response personalInfoResponse = Jsoup.connect(menuLeftUrl)
                 .method(Connection.Method.GET)
                 .cookies(loginCookie)
