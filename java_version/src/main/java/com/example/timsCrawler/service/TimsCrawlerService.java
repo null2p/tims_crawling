@@ -72,7 +72,7 @@ public class TimsCrawlerService {
         Date today = new Date();
         String dateToday = timsDateFormat.format(today);
 
-        String attendanceUrl = "https://otims.tmax.co.kr/insa/attend/findAttdDailyConfirm.screen";
+        String attendanceUrl = tmaxPrefix + "/insa/attend/findAttdDailyConfirm.screen";
 
         Map<String,String> attendanceForm = new HashMap<>();
         attendanceForm.put("retStDate",dateToday.substring(0,4)+".01.01");
