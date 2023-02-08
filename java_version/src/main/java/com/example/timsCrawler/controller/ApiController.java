@@ -33,21 +33,21 @@ public class ApiController {
         }
     }
 
-    @GetMapping(path = "/late-time")
-    public void getTotalLateTime(HttpServletRequest request) throws IOException {
-        Cookie[] cookies = request.getCookies();
-        timsCrawlerService.getYearAttendanceList(cookies);
-    }
+//    @GetMapping(path = "/late-time")
+//    public void getTotalLateTime(HttpServletRequest request) throws IOException {
+//        Cookie[] cookies = request.getCookies();
+//        timsCrawlerService.getYearAttendanceList(cookies);
+//    }
 
-    @GetMapping(path="/name")
-    public void getName(HttpServletRequest request) throws IOException {
-        Cookie[] cookies = request.getCookies();
-        timsCrawlerService.getName(cookies);
-    }
+//    @GetMapping(path="/name")
+//    public void getName(HttpServletRequest request) throws IOException {
+//        Cookie[] cookies = request.getCookies();
+//        timsCrawlerService.getName(cookies);
+//    }
 
-    @GetMapping(path="/work-time")
-    public ResponseEntity<WorkTimeResponseDto> getWorkTime(HttpServletRequest request) throws IOException{
-        Cookie[] cookies = request.getCookies();
-        return ResponseEntity.ok(timsCrawlerService.getWeekAttendanceList(cookies));
-    }
+//    @GetMapping(path="/work-time")
+//    public ResponseEntity<WorkTimeResponseDto> getWorkTime(HttpServletRequest request) throws IOException{
+//        Cookie[] cookies = request.getCookies();
+//        return ResponseEntity.ok(timsCrawlerService.getWeekAttendanceList(cookies));
+//    }
 }

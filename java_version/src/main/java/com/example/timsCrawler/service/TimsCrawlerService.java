@@ -18,7 +18,7 @@ import java.util.*;
 @Service
 public class TimsCrawlerService {
     String userAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36";
-    String tmaxPrefix;
+    String tmaxPrefix; // todo - refactor stateful code to stateless [Yunhye-Choi]
 
     public void tryLogin(Member member) throws IOException {
         Map<String, String> loginData = new HashMap<>();
