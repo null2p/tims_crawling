@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -62,7 +64,7 @@ public class TimsCrawlerService {
         return "";
     }
 
-    public MilitaryLateTimeResponseDto getYearAttendanceList(Cookie[] cookies) throws IOException {
+    public MilitaryLateTimeResponseDto getYearAttendanceList(Cookie[] cookies, LocalDate date) throws IOException {
         Map<String, String> loginCookie = new HashMap<>();
         for (Cookie cookie : cookies) {
             loginCookie.put(cookie.getName(), cookie.getValue());
@@ -72,10 +74,18 @@ public class TimsCrawlerService {
         Date today = new Date();
         String dateToday = timsDateFormat.format(today);
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+
         String attendanceUrl = tmaxPrefix + "/insa/attend/findAttdDailyConfirm.screen";
 
         Map<String,String> attendanceForm = new HashMap<>();
-        attendanceForm.put("retStDate",dateToday.substring(0,4)+".01.01");
+        if (date == null) {
+            attendanceForm.put("retStDate", dateToday.substring(0, 4) + ".01.01");
+        }
+        else {
+            attendanceForm.put("retStDate", date.format(formatter));
+        }
+
         attendanceForm.put("retEdDate",dateToday);
 
         Connection.Response attendanceResponse = Jsoup.connect(attendanceUrl)
@@ -164,6 +174,7 @@ public class TimsCrawlerService {
         for (Element row : lateElements) {
             Element lateTimeCell = row.select("td:nth-of-type(10)").first();
 
+            //todo : 반차 산정해야함
             if (lateTimeCell != null) {
                 String lateTimeHour = lateTimeCell.text().substring(0,2);
                 String lateTimeMin = lateTimeCell.text().substring(3,5);
@@ -177,8 +188,8 @@ public class TimsCrawlerService {
         System.out.println("지각 몇 분 ?: "+ totalLateTime + "분");
 
         return MilitaryLateTimeResponseDto.builder()
-                .day(totalLateTime/(60*24))
-                .hour(totalLateTime/60)
+                .day(totalLateTime/(60*8))
+                .hour((totalLateTime - 60*8*(totalLateTime/(60*8)))/60)
                 .min(totalLateTime%60)
                 .build();
     }

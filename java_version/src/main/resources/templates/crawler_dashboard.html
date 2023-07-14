@@ -43,7 +43,21 @@
                 <td><h1 class="military-title">전문연구요원 기능</h1></td>
             </tr>
         </table>
-        <h2 class="military-sub-title">올해 누적 지각 시간</h2>
+        <!--DATE PICKER-->
+        <form th:action="@{/dateSubmit}" method="post" class="mt-4 mb-4">
+            <div class="form-group row">
+                <label for="dateInput" class="col-sm-5 col-form-label" style="font-size: 1.5em">이 날짜부터의 지각 누적시간 계산:</label>
+                <div class="col-sm-4">
+                    <input type="date" class="form-control" placeholder="YYYY/MM/DD" id="dateInput" name="dateInput">
+                </div>
+                <div class="col-sm-3">
+                    <button type="submit" class="btn btn-primary">적용</button>
+                </div>
+            </div>
+        </form>
+        <!--DATE PICKER-->
+        <h2 class="military-sub-title" th:if="${date == null}">올해 누적 지각 시간</h2>
+        <h2 class="military-sub-title" th:unless="${date == null}" th:text="${' ' + date + '부터 누적 지각 시간'}"></h2>
         <div class="military-late">
             <table style="margin:0 auto;">
                 <tr>

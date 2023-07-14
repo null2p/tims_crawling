@@ -14,6 +14,7 @@ public class Member {
     private String password;
     private String company;
     Map<String, String> loginCookie;
+    //todo Cookie -> Cookies로 바꿔서 모든 쿠키 저장하도록 변경해야함, setResponseCookie() 내에서 new 로 덮어쓰면 안됨!! 바보멍청아!! ㅜㅜ
     Cookie cookie;
 
     public void nullifyLoginData(){
