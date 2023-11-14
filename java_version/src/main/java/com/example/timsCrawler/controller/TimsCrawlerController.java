@@ -33,10 +33,6 @@ public class TimsCrawlerController {
             Model model, HttpServletRequest httpServletRequest) throws IOException {
 
         Cookie[] cookies = httpServletRequest.getCookies();
-        for (Cookie cookie : cookies) {
-            System.out.println("cookieN = " + cookie.getName());
-            System.out.println("cookieV = " + cookie.getValue());
-        }
         WorkTimeResponseDto workTimeResponseDto = timsCrawlerService.getWeekAttendanceList(cookies);
         workTimeResponseDto.setName(timsCrawlerService.getName(cookies));
         model.addAttribute("workTimeResponse", workTimeResponseDto);

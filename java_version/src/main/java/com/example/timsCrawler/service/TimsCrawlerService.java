@@ -10,6 +10,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -182,12 +183,16 @@ public class TimsCrawlerService {
 
     public MilitaryLateTimeResponseDto getLateTime(Document attendanceYearDocument) {
         Elements lateElements = attendanceYearDocument.select("table tr:has(td:contains(지각))");
+        Elements morningOffElements = attendanceYearDocument.select("table tr:has(td:contains(반차(오전)))");
+        Elements afternoonOffElements = attendanceYearDocument.select("table tr:has(td:contains(반차(오후)))");
+
         int totalLateTime = 0;
+
+        // 근태구분 : 지각
         for (Element row : lateElements) {
             Element lateTimeCell = row.select("td:nth-of-type(10)").first();
 
-            //todo : 반차 산정해야함
-            if (lateTimeCell != null) {
+            if (lateTimeCell != null && StringUtils.hasText(lateTimeCell.text())) {
                 String lateTimeHour = lateTimeCell.text().substring(0,2);
                 String lateTimeMin = lateTimeCell.text().substring(3,5);
 
@@ -197,6 +202,57 @@ public class TimsCrawlerService {
                 totalLateTime += 60*(lateHourInt - 9) + lateMinInt;
             }
         }
+        // 근태구분 : 오전 반차
+        for (Element row : morningOffElements) {
+            Element enterTimeCell = row.select("td:nth-of-type(10)").first();
+            Element exitTimeCell = row.select("td:nth-of-type(13)").first();
+
+            if (enterTimeCell!= null && StringUtils.hasText(enterTimeCell.text())) {
+                String enterTimeHour = enterTimeCell.text().substring(0,2);
+                String exitTimeHour = exitTimeCell.text().substring(0,2);
+                String enterTimeMin = enterTimeCell.text().substring(3,5);
+                String exitTimeMin = exitTimeCell.text().substring(3,5);
+
+                int enterHourInt = Integer.parseInt(enterTimeHour);
+                int exitHourInt = Integer.parseInt(exitTimeHour);
+                int enterMinInt = Integer.parseInt(enterTimeMin);
+                int exitMinInt = Integer.parseInt(exitTimeMin);
+
+                if(enterHourInt >= 14){
+                    totalLateTime += 60*(enterHourInt - 14) + enterMinInt;
+                }
+                if(exitHourInt < 18){
+                    totalLateTime += 60*(17 - exitHourInt) + 60 - exitMinInt;
+                }
+            }
+        }
+        // 근태구분 : 오후 반차
+        for (Element row : afternoonOffElements) {
+            Element enterTimeCell = row.select("td:nth-of-type(10)").first();
+            Element exitTimeCell = row.select("td:nth-of-type(13)").first();
+
+            if (enterTimeCell!= null && StringUtils.hasText(enterTimeCell.text())) {
+
+                String enterTimeHour = enterTimeCell.text().substring(0,2);
+                String exitTimeHour = exitTimeCell.text().substring(0,2);
+                String enterTimeMin = enterTimeCell.text().substring(3,5);
+                String exitTimeMin = exitTimeCell.text().substring(3,5);
+
+                int enterHourInt = Integer.parseInt(enterTimeHour);
+                int exitHourInt = Integer.parseInt(exitTimeHour);
+                int enterMinInt = Integer.parseInt(enterTimeMin);
+                int exitMinInt = Integer.parseInt(exitTimeMin);
+
+                if(enterHourInt >= 9){
+                    totalLateTime += 60*(enterHourInt - 9) + enterMinInt;
+                }
+                if(exitHourInt < 14){
+                    totalLateTime += 60*(13 - exitHourInt) + 60 - exitMinInt;
+                }
+            }
+        }
+
+
         System.out.println("지각 몇 분 ?: "+ totalLateTime + "분");
 
         return MilitaryLateTimeResponseDto.builder()
