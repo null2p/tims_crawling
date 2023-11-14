@@ -1,64 +1,64 @@
 <!doctype HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8">
-	<title>근태 크롤러</title>
-	<link rel="stylesheet" th:href="@{/css/style.css}">
-	<script src="https://kit.fontawesome.com/51db22a717.js" crossorigin="anonymous"></script>
-	<script th:src="@{/js/script.js}"></script>
+    <meta charset="UTF-8">
+    <title>근태 크롤러</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://kit.fontawesome.com/51db22a717.js" crossorigin="anonymous"></script>
+    <script th:src="@{/js/script.js}"></script>
 </head>
 <body>
-	<div class="main-container">
-		<div class="main-wrap">
-		<header>
-			<div class="logo-wrap">
-				<img th:src="@{/images/title.png}">
-			</div>
-		</header>
-		<section class="login-input-section-wrap">
-			<form id="loginForm">
-				<div class="login-input-wrap">
-					<input id="username"  placeholder="Tims 아이디" type="text"></input>
-				</div>
-				<div class="login-input-wrap password-wrap">
-					<input id="password"  placeholder="Tims 비밀번호" type="password"></input>
-				</div>
-				<div class="login-radio-wrap family-wrap">
-					<tr>
-						<td>
-							<label style="color: #666666;">
-								<input type="radio" checked name="company"  onfocus="this.blur()" value="TS" style="vertical-align:sub; width:20px; heigth:20px;">
-								Soft Group
-							</label>
-							<label style="font-family: NotoSansKR Regular;">&nbsp;&nbsp;</label>
-							<label style="color: #666666;">
-								<input type="radio" name="company"  onfocus="this.blur()" value="TD" style="vertical-align:sub; width:20px; heigth:20px;">
-								Data Group
-							</label>
-							<label style="font-family: NotoSansKR Regular;">&nbsp;&nbsp;</label>
-							<label style="color: #666666;">
-								<input type="radio" name="company"  onfocus="this.blur()" value="TO" style="vertical-align:sub; width:20px; heigth:20px;">
-								A&amp;C Group
-							</label>
-						</td>
-					</tr>
-				</div>
-				<div class="login-button-wrap">
-					<button type="submit" >이번주 근무 시간 확인하기</button>
-				</div>
-<!--				<div class="login-stay-sign-in">-->
-<!--					<i class="far fa-check-circle"></i>-->
-<!--					<span>로그인 상태 저장하기</span>-->
-<!--				</div>-->
-			</form>
-		</section>
-
-		<footer>
-			<div class="copyright-wrap">
-			<span>	Copyright © dboo-cherry-null</span>
-			</div>
-		</footer>
-		</div>
-	</div>
+<div class="main-container">
+    <div class="main-wrap">
+        <header>
+            <div class="logo-wrap">
+                <img th:src="@{/images/title.png}">
+            </div>
+        </header>
+        <section class="login-input-section-wrap">
+            <form id="loginForm">
+                <div class="login-input-wrap">
+                    <input id="username" placeholder="Tims 아이디" type="text"></input>
+                </div>
+                <div class="login-input-wrap password-wrap">
+                    <input id="password" placeholder="Tims 비밀번호" type="password"></input>
+                </div>
+                <div class="login-radio-wrap family-wrap">
+                    <label style="color: #666666;">
+                        <input type="radio" checked name="company" onfocus="this.blur()" value="TS"
+                               style="vertical-align:sub; width:20px; height:20px;"/>
+                        Soft Group
+                    </label>
+                    <label style="font-family: NotoSansKR Regular;">&nbsp;&nbsp;</label>
+                    <label style="color: #666666;">
+                        <input type="radio" name="company" onfocus="this.blur()" value="TD"
+                               style="vertical-align:sub; width:20px; height:20px;"/>
+                        Data Group
+                    </label>
+                    <label style="font-family: NotoSansKR Regular;">&nbsp;&nbsp;</label>
+                    <label style="color: #666666;">
+                        <input type="radio" name="company" onfocus="this.blur()" value="TO"
+                               style="vertical-align:sub; width:20px; height:20px;"/>
+                        A&amp;C Group
+                    </label>
+                </div>
+                <div id="loginButton">
+                    <div class="login-button-wrap">
+                        <button type="submit">이번주 근무 시간 확인하기</button>
+                    </div>
+                </div>
+                <!--				<div class="login-stay-sign-in">-->
+                <!--					<i class="far fa-check-circle"></i>-->
+                <!--					<span>로그인 상태 저장하기</span>-->
+                <!--				</div>-->
+            </form>
+        </section>
+        <footer>
+            <div class="copyright-wrap">
+                <span>	Copyright © dboo-cherry-null</span>
+            </div>
+        </footer>
+    </div>
+</div>
 </body>
 </html>

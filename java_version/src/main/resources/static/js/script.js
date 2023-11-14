@@ -1,4 +1,17 @@
 // Get the form element
+function changeLoginButtonText(statusCode) {
+    var buttonElement = document.querySelector("#loginButton .login-button-wrap button");
+
+    if (statusCode !== 200) {
+        buttonElement.innerText = "아이디 또는 패스워드를 확인하세요";
+        setTimeout(function() {
+            buttonElement.innerText = "이번주 근무 시간 확인하기";
+        }, 2000); // 2000 milliseconds (2 seconds)
+    } else {
+        buttonElement.innerText = "근무시간 계산 중입니다...";
+    }
+}
+
 window.onload = function() {
     var loginForm = document.getElementById("loginForm");
 
@@ -22,6 +35,7 @@ window.onload = function() {
         body: JSON.stringify({ username: username, password: password, company:company })
     }).then(function(response) {
         // Check if the response is successful
+        changeLoginButtonText(response.status);
         if (!response.ok) {
             throw new Error("Failed to authenticate");
         }
