@@ -42,7 +42,6 @@ public class TimsCrawlerService {
 
         member.nullifyLoginData();
         member.setLoginCookie(loginPageResponse.cookies());
-        System.out.println("cookie = " + loginPageResponse.cookies());
         return loginPageResponse; //status code 이용해서 exception handle
     }
 
@@ -252,9 +251,6 @@ public class TimsCrawlerService {
             }
         }
 
-
-        System.out.println("지각 몇 분 ?: "+ totalLateTime + "분");
-
         return MilitaryLateTimeResponseDto.builder()
                 .day(totalLateTime/(60*8))
                 .hour((totalLateTime - 60*8*(totalLateTime/(60*8)))/60)
@@ -278,7 +274,6 @@ public class TimsCrawlerService {
         workTime += getWorkTimeToday(afterOffElements, 14,18);
         //휴가 근무시간 합
         Elements offElements = attendanceWeekDocument.select("table tr:has(td:contains(휴가))");
-//        System.out.println("offElements = " + offElements);
         for(Element row : offElements){
             if(row == null){
                 System.out.println("offElements is null");
@@ -287,8 +282,6 @@ public class TimsCrawlerService {
         }
         //목차에 있는 "휴가" element 잡힌 것 제외
         workTime -= 60*8;
-
-        System.out.println("workTime = " + workTime);
         return workTime;
     }
 
