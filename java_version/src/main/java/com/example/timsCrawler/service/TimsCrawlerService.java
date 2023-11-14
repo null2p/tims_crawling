@@ -20,7 +20,6 @@ import java.util.*;
 @Service
 public class TimsCrawlerService {
     String userAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36";
-    String tmaxPrefix; // todo - refactor stateful code to stateless [Yunhye-Choi]
 
     public Connection.Response tryLogin(Member member) throws IOException {
         Map<String, String> loginData = new HashMap<>();
@@ -49,16 +48,29 @@ public class TimsCrawlerService {
     private String getLoginUrl(String company){
         switch (company) {
             case "TS" -> {
-                tmaxPrefix = "https://stims.tmax.co.kr";
                 return "https://stims.tmax.co.kr/checkUserInfo.tmv?tmaxsso_nsso=no";
             }
             case "TD" -> {
-                tmaxPrefix = "https://dtims.tmax.co.kr";
                 return "https://dtims.tmax.co.kr/checkUserInfo.tmv?tmaxsso_nsso=no";
             }
             case "TO" -> {
-                tmaxPrefix = "https://otims.tmax.co.kr";
                 return "https://otims.tmax.co.kr/checkUserInfo.tmv?tmaxsso_nsso=no";
+            }
+        }
+
+        return "";
+    }
+
+    private String getTmaxPrefix(String company){
+        switch (company) {
+            case "TS" -> {
+                return "https://stims.tmax.co.kr";
+            }
+            case "TD" -> {
+                return "https://dtims.tmax.co.kr";
+            }
+            case "TO" -> {
+                return "https://otims.tmax.co.kr";
             }
         }
 
@@ -77,7 +89,7 @@ public class TimsCrawlerService {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
-        String attendanceUrl = tmaxPrefix + "/insa/attend/findAttdDailyConfirm.screen";
+        String attendanceUrl = getTmaxPrefix(loginCookie.get("company")) + "/insa/attend/findAttdDailyConfirm.screen";
 
         Map<String,String> attendanceForm = new HashMap<>();
         if (date == null) {
@@ -86,7 +98,6 @@ public class TimsCrawlerService {
         else {
             attendanceForm.put("retStDate", date.format(formatter));
         }
-
         attendanceForm.put("retEdDate",dateToday);
 
         Connection.Response attendanceResponse = Jsoup.connect(attendanceUrl)
@@ -114,7 +125,7 @@ public class TimsCrawlerService {
         String dateToday = timsDateFormat.format(today);
         String dateMonday = getDateMonday();
 
-        String attendanceUrl = tmaxPrefix + "/insa/attend/findAttdDailyConfirm.screen";
+        String attendanceUrl = getTmaxPrefix(loginCookie.get("company")) + "/insa/attend/findAttdDailyConfirm.screen";
 
         Map<String,String> attendanceForm = new HashMap<>();
         attendanceForm.put("retStDate",dateMonday);
@@ -147,7 +158,7 @@ public class TimsCrawlerService {
         for (Cookie cookie : cookies) {
             loginCookie.put(cookie.getName(), cookie.getValue());
         }
-        String menuLeftUrl = tmaxPrefix + "/menuLeft.screen";
+        String menuLeftUrl = getTmaxPrefix(loginCookie.get("company")) + "/menuLeft.screen";
         Connection.Response personalInfoResponse = Jsoup.connect(menuLeftUrl)
                 .method(Connection.Method.GET)
                 .cookies(loginCookie)

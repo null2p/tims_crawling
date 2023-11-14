@@ -40,6 +40,7 @@ public class ApiController {
                 Cookie cookie = new Cookie(entry.getKey(), entry.getValue());
                 httpServletResponse.addCookie(cookie);
             }
+            httpServletResponse.addCookie(new Cookie("company",member.getCompany()));
 
             return new ResponseEntity<>("Login Successful", HttpStatus.OK);
         } catch (Exception e) {
